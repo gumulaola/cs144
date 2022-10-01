@@ -17,6 +17,19 @@ void get_URL(const string &host, const string &path) {
     // (not just one call to read() -- everything) until you reach
     // the "eof" (end of file).
 
+    Address address = Address(host, "http");
+    TCPSocket tcp;
+    tcp.connect(address);
+    tcp.write("GET " + path + " HTTP/1.1\r\n");
+    tcp.write("HOST: " + host + "\r\n");
+    tcp.write("Connection: close\r\n");
+    tcp.write("\r\n");
+
+    while (!tcp.eof()) {
+        cout << tcp.read();
+    }
+    tcp.close();
+
     cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
     cerr << "Warning: get_URL() has not been implemented yet.\n";
 }
@@ -32,7 +45,7 @@ int main(int argc, char *argv[]) {
         // itself, so arg count = 3 in total).
         if (argc != 3) {
             cerr << "Usage: " << argv[0] << " HOST PATH\n";
-            cerr << "\tExample: " << argv[0] << " stanford.edu /class/cs144\n";
+            cerr << "Example: " << argv[0] << " stanford.edu /class/cs144\n";
             return EXIT_FAILURE;
         }
 
