@@ -4,6 +4,8 @@
 #include "byte_stream.hh"
 
 #include <cstdint>
+#include <deque>
+#include <map>
 #include <string>
 
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
@@ -11,6 +13,11 @@
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
+    std::deque<char> _buffer;
+    std::deque<bool> _bit;
+    size_t _unassembled_bytes;
+    size_t _buffer_begin;
+    bool _eof;
 
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
