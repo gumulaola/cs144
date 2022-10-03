@@ -25,7 +25,9 @@ TCPSender::TCPSender(const size_t capacity, const uint16_t retx_timeout, const s
 uint64_t TCPSender::bytes_in_flight() const { return _outstanding_bytes; }
 
 void TCPSender::fill_window() {
+    // window size 如果是 0 则置 1
     size_t curr_window_size = _last_window_size ? _last_window_size : 1;
+
     while (curr_window_size > _outstanding_bytes) {
         TCPSegment segment;
         if (!_set_syn_flag) {
